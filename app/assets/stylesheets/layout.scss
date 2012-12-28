@@ -16,7 +16,7 @@ body {
 
 #page-header{
 	width: 200px;
-	position: fixed;
+	position: absolute;
 	top:0;
 	left:40px;
 	background-color: white;
@@ -27,6 +27,6 @@ body {
 		left-radius: 8px;
 	}
 	h1{
-		margin: 10px 0px;
+		margin: 5px 0px;
 	}
 }

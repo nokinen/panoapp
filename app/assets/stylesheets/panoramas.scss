@@ -31,6 +31,7 @@
 }
 
 #upload {
+	padding: 4px;
 	position: fixed;
 	bottom: 0px;
 	left: 40px;
@@ -40,15 +41,20 @@
 	}
 	background-color: white;
 	color: grey;
-	width: 1.3em;
-	height: 1.3em;
 	text-align: center;
+	border: {
+		top-left-radius: 4px;
+		top-right-radius: 4px;
+	}
+}
+
+#dropzone {
+	width: 1.4em;
+	height: 1.4em;
 	border: {
 		style: dashed;
 		color: grey;
 		width: 4px;
-		top-left-radius: 4px;
-		top-right-radius: 4px;
-		bottom: none;
+		radius: 4px;
 	}
 }
