@@ -29,3 +29,26 @@
 		box-sizing: border-box;
 	}
 }
+
+#upload {
+	position: fixed;
+	bottom: 0px;
+	left: 40px;
+	font:{
+		weight: bold;
+		size: 30pt;
+	}
+	background-color: white;
+	color: grey;
+	width: 1.3em;
+	height: 1.3em;
+	text-align: center;
+	border: {
+		style: dashed;
+		color: grey;
+		width: 4px;
+		top-left-radius: 4px;
+		top-right-radius: 4px;
+		bottom: none;
+	}
+}
