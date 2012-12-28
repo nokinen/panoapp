@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
+gem 'thin'
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
 group :assets do

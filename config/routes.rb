@@ -1,7 +1,7 @@
 Panoapp::Application.routes.draw do
   
+  get "policy/generate"
   root to: "panoramas#index"
-  
   resources :panoramas, only: [:index, :create, :show, :destroy]
   
   # The priority is based upon order of creation:
