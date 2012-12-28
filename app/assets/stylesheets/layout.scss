@@ -1,0 +1,32 @@
+$linkColor: black;
+
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: black;
+	a {
+		text-decoration: none;
+		color: $linkColor;
+	}
+}
+
+#page-header{
+	width: 200px;
+	position: fixed;
+	top:0;
+	left:40px;
+	background-color: white;
+	text-align:center;
+	z-index:1;
+	border-bottom: {
+		right-radius: 8px;
+		left-radius: 8px;
+	}
+	h1{
+		margin: 10px 0px;
+	}
+}

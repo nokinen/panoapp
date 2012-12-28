@@ -1,0 +1,9 @@
+<div id="previews">
+<% @panoramas.each do |panorama| %>
+<div id="preview">
+	<%= link_to panorama do %>
+		<%= image_tag panorama.preview %>
+	<% end %>
+</div>
+<% end %>
+</div>
