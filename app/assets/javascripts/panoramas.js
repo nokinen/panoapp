@@ -1,13 +1,31 @@
+function Job(name){
+	this.id = Math.random() * Math.pow(10,17);
+	this.name = name;
+	this.preview = false;
+	this.fullsize = false;
+}
+
+Job.prototype.finished = function(){
+	return this.preview && this.fullsize ? true : false;
+}
+
 window.onload = function(){
+	var files = document.getElementById("files");
 	var dropzone = document.getElementById("dropzone");
 
 	// Detect drag and drop support
 	if('draggable' in document.createElement('span')) {
+		files.style.display = "none";
 		dropzone.addEventListener("dragover", allowDrop);
 		dropzone.addEventListener("drop", drop);
 	} else {
-		console.error("Drag and drop not supported by browser");
+		dropzone.style.display = "none";
+		files.addEventListener("change", fileSelection);
 	}
+}
+
+function fileSelection(event){
+	process(event.target.files);
 }
 
 function drop(event){
@@ -31,25 +49,38 @@ function process(files){
 		}
 		
 		var reader = new FileReader();
-		reader.onload = function(event){
-		
-			var image = new Image();
-			image.src = event.target.result;
-			image.onload = function(){
+		(function(filename){
+			reader.onload = function(event){
+			
+				var job = new Job(filename);
+				console.log("Processing " + job.name);
+			
+				var image = new Image();
+				image.src = event.target.result;
+				image.onload = function(){
 				
-				// Preview image
-				var preview = resize(image, 1920, 0.5);
-				upload(window.dataURLtoBlob(preview));
+					// Preview image
+					var preview = resize(image, 1920, 0.5);
+					upload(preview, function(uri){
+						job.preview = uri;
+						console.log("Preview image for " + 
+							job.name + " uploaded to " + uri);
+						createPanorama(job);
+					});
 				
-				// Fullsize image
-				var fullsize = resize(image, image.width, 0.2);
-				upload(window.dataURLtoBlob(fullsize));
-			}
+					// Fullsize image
+					var fullsize = resize(image, image.width, 0.2);
+					upload(fullsize, function(uri){
+						job.fullsize = uri;
+						console.log("Fullsize image for " + 
+							job.name + " uploaded to " + uri);
+						createPanorama(job);
+					});
+				}
 	
-		}
+			}
+		})(file.name);
 		reader.readAsDataURL(file);
-		
-		console.log("Processing " + file.name);
 		
 	}
 	
@@ -68,7 +99,7 @@ function resize(image, width, quality){
 	return canvas.toDataURL("image/jpeg", quality);
 }
 
-function upload(blob){
+function upload(data_url, callback){
 	
 	// Fetch AWS S3 credentials and signature
 	var request = new XMLHttpRequest();
@@ -80,7 +111,7 @@ function upload(blob){
 			return;
 		
 		var credentials = JSON.parse(evt.target.response);
-		post(credentials, blob);
+		post(credentials, window.dataURLtoBlob(data_url), callback);
 		
 	}
 	request.onerror = function(evt){
@@ -89,7 +120,7 @@ function upload(blob){
 	request.send();
 }
 
-function post(credentials, blob){
+function post(credentials, blob, callback){
 	
 	var formData = new FormData();
 	formData.append("key", credentials.key);
@@ -105,10 +136,8 @@ function post(credentials, blob){
 	request.open("POST", uri, true);
 	request.onload = function(evt){
 		
-		if(request.status != 204)
-			return;
-		
-		console.log("Successfully uploaded " + credentials.key);
+		if(request.status == 204)
+			callback(uri + "/" + credentials.key);
 
 	}
 	request.onerror = function(evt){
@@ -116,4 +145,25 @@ function post(credentials, blob){
 	}
 	request.send(formData);
 	
+}
+
+function createPanorama(job){
+	
+	if(!job.finished())
+		return;
+		
+	var formData = new FormData();
+	formData.append("panorama[preview]", job.preview);
+	formData.append("panorama[fullsize]", job.fullsize);
+	
+	var request = new XMLHttpRequest();
+	request.open("POST", "/panoramas", true);
+	request.onload = function(evt){
+		if(request.status == 201)
+			console.log("Successfully created panorama from " + job.name);
+	}
+	request.onerror = function(evt){
+		console.error("Could not create panorama from " + job.name);
+	}
+	request.send(formData);
 }
