@@ -22,6 +22,8 @@ window.onload = function(){
 		dropzone.style.display = "none";
 		files.addEventListener("change", fileSelection);
 	}
+	
+	document.getElementById("upload").style.display = "inherit";
 }
 
 function fileSelection(event){
@@ -61,6 +63,9 @@ function process(files){
 				
 					// Preview image
 					var preview = resize(image, 1920, 0.5);
+					
+					appendPreview(job, preview);
+					
 					upload(preview, function(uri){
 						job.preview = uri;
 						console.log("Preview image for " + 
@@ -147,6 +152,41 @@ function post(credentials, blob, callback){
 	
 }
 
+function appendPreview(job, previewUrl){
+	
+	var preview = document.createElement("div");
+	preview.className = "preview";
+	
+	var img = new Image();
+	img.src = previewUrl;
+	img.id = job.id;
+	img.className = "processing";
+	
+	preview.appendChild(img);
+	
+	var previews = document.getElementById("previews");
+	var first = previews.firstChild;
+	previews.insertBefore(preview, first);
+}
+
+function linkPreview(id, location){
+		
+		var path = document.createElement("a");
+		path.href = location;
+	
+		var img = document.getElementById(id);
+		img.className = "";
+		
+		var preview = img.parentNode;
+		preview.removeChild(img);
+		
+		var a = document.createElement("a");
+		a.href = path.pathname;
+		a.appendChild(img);
+		
+		preview.appendChild(a);
+}
+
 function createPanorama(job){
 	
 	if(!job.finished())
@@ -159,8 +199,11 @@ function createPanorama(job){
 	var request = new XMLHttpRequest();
 	request.open("POST", "/panoramas", true);
 	request.onload = function(evt){
-		if(request.status == 201)
-			console.log("Successfully created panorama from " + job.name);
+		if(request.status != 201)
+			return;
+		
+		console.log("Successfully created panorama from " + job.name);
+		linkPreview(job.id, request.getResponseHeader("location"));
 	}
 	request.onerror = function(evt){
 		console.error("Could not create panorama from " + job.name);

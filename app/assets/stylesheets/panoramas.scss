@@ -1,3 +1,30 @@
+@mixin unblurred-color {
+	filter: blur(0px) grayscale(0%);
+	-webkit-filter: blur(0px) grayscale(0%);
+	-moz-filter: blur(0px) grayscale(0%);
+	-ms-filter: blur(0px) grayscale(0%);
+	-o-filter: blur(0px) grayscale(0%);
+	-khtml-filter: blur(0px) grayscale(0%);
+}
+
+@mixin blurred-greyscale {
+	filter: blur(2px) grayscale(100%);
+	-webkit-filter: blur(2px) grayscale(100%);
+	-moz-filter: blur(2px) grayscale(100%);
+	-ms-filter: blur(2px) grayscale(100%);
+	-o-filter: blur(2px) grayscale(100%);
+	-khtml-filter: blur(2px) grayscale(100%);
+}
+
+@mixin unblurred-greyscale {
+	filter: blur(0px) grayscale(100%);
+	-webkit-filter: blur(0px) grayscale(100%);
+	-moz-filter: blur(0px) grayscale(100%);
+	-ms-filter: blur(0px) grayscale(100%);
+	-o-filter: blur(0px) grayscale(100%);
+	-khtml-filter: blur(0px) grayscale(100%);
+}
+
 #previews {
 	box-sizing: border-box;
 	border: 10px solid black;
@@ -6,19 +33,19 @@
 	img {
 		max-width: 100%;
 		border-bottom:8px solid black;
-		-webkit-filter: grayscale(100%);
-		-moz-filter: grayscale(100%);
-		-ms-filter: grayscale(100%);
-		-o-filter: grayscale(100%);
-		filter: grayscale(100%);
-	}
-	
-	img:hover {
-		filter: grayscale(0%);
-		-webkit-filter: grayscale(0%);
-		-moz-filter: grayscale(0%);
-		-ms-filter: grayscale(0%);
-		-o-filter: grayscale(0%);
+		
+		@include unblurred-greyscale;
+		
+		&:hover {
+			@include unblurred-color;
+		}
+		
+		&.processing {
+			@include blurred-greyscale;
+			&:hover {
+				@include blurred-greyscale;
+			}
+		}
 	}
 }
 
@@ -31,6 +58,7 @@
 }
 
 #upload {
+	display: none;
 	padding: 4px;
 	position: fixed;
 	bottom: 0px;
