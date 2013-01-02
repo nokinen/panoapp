@@ -8,6 +8,9 @@
 <% end %>
 </div>
 <div id="upload">
-	<div id="dropzone">+</div>
-	<input id="files" type="file" name="files[]" accept="image/jpeg" multiple>
+	<% if mobile_device? %>
+		<input id="files" type="file" name="files[]" accept="image/jpeg" multiple>
+	<% else %>
+		<div id="dropzone">+</div>
+	<% end %>
 </div>

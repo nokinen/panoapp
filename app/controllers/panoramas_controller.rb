@@ -1,7 +1,7 @@
 class PanoramasController < ApplicationController
   
   def index
-    @panoramas = Panorama.all
+    @panoramas = Panorama.all order: "created_at DESC"
   end
   
   def create

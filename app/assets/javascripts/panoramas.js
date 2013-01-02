@@ -14,14 +14,20 @@ window.onload = function(){
 	var dropzone = document.getElementById("dropzone");
 
 	// Detect drag and drop support
-	if('draggable' in document.createElement('span')) {
-		files.style.display = "none";
-		dropzone.addEventListener("dragover", allowDrop);
-		dropzone.addEventListener("drop", drop);
-	} else {
-		dropzone.style.display = "none";
-		files.addEventListener("change", fileSelection);
-	}
+		// if('draggable' in document.createElement('span')) {
+			// files.style.display = "none";
+			if(dropzone){
+				dropzone.addEventListener("dragover", allowDrop);
+				dropzone.addEventListener("drop", drop);
+			}
+			
+			if(files){
+				files.addEventListener("change", fileSelection);
+			}
+		// } else {
+			// dropzone.style.display = "none";
+			
+		// }
 	
 	document.getElementById("upload").style.display = "inherit";
 }
@@ -167,6 +173,7 @@ function appendPreview(job, previewUrl){
 	var previews = document.getElementById("previews");
 	var first = previews.firstChild;
 	previews.insertBefore(preview, first);
+
 }
 
 function linkPreview(id, location){
