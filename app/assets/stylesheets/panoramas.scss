@@ -1,52 +1,52 @@
 @mixin unblurred-color {
-	filter: blur(0px) grayscale(0%);
-	-webkit-filter: blur(0px) grayscale(0%);
-	-moz-filter: blur(0px) grayscale(0%);
-	-ms-filter: blur(0px) grayscale(0%);
-	-o-filter: blur(0px) grayscale(0%);
-	-khtml-filter: blur(0px) grayscale(0%);
+  filter: blur(0px) grayscale(0%);
+  -webkit-filter: blur(0px) grayscale(0%);
+  -moz-filter: blur(0px) grayscale(0%);
+  -ms-filter: blur(0px) grayscale(0%);
+  -o-filter: blur(0px) grayscale(0%);
+  -khtml-filter: blur(0px) grayscale(0%);
 }
 
 @mixin blurred-greyscale {
-	filter: blur(2px) grayscale(100%);
-	-webkit-filter: blur(2px) grayscale(100%);
-	-moz-filter: blur(2px) grayscale(100%);
-	-ms-filter: blur(2px) grayscale(100%);
-	-o-filter: blur(2px) grayscale(100%);
-	-khtml-filter: blur(2px) grayscale(100%);
+  filter: blur(2px) grayscale(100%);
+  -webkit-filter: blur(2px) grayscale(100%);
+  -moz-filter: blur(2px) grayscale(100%);
+  -ms-filter: blur(2px) grayscale(100%);
+  -o-filter: blur(2px) grayscale(100%);
+  -khtml-filter: blur(2px) grayscale(100%);
 }
 
 @mixin unblurred-greyscale {
-	filter: blur(0px) grayscale(100%);
-	-webkit-filter: blur(0px) grayscale(100%);
-	-moz-filter: blur(0px) grayscale(100%);
-	-ms-filter: blur(0px) grayscale(100%);
-	-o-filter: blur(0px) grayscale(100%);
-	-khtml-filter: blur(0px) grayscale(100%);
+  filter: blur(0px) grayscale(100%);
+  -webkit-filter: blur(0px) grayscale(100%);
+  -moz-filter: blur(0px) grayscale(100%);
+  -ms-filter: blur(0px) grayscale(100%);
+  -o-filter: blur(0px) grayscale(100%);
+  -khtml-filter: blur(0px) grayscale(100%);
 }
 
 #previews {
-	box-sizing: border-box;
-	border: 10px solid black;
-	border-bottom:0px;
-	
-	img {
-		max-width: 100%;
-		border-bottom:8px solid black;
-		
-		@include unblurred-greyscale;
-		
-		&:hover {
-			@include unblurred-color;
-		}
-		
-		&.processing {
-			@include blurred-greyscale;
-			&:hover {
-				@include blurred-greyscale;
-			}
-		}
-	}
+  box-sizing: border-box;
+  border: 10px solid black;
+  border-bottom:0px;
+
+  img {
+    max-width: 100%;
+    border-bottom:8px solid black;
+
+    @include unblurred-greyscale;
+
+    &:hover {
+      @include unblurred-color;
+    }
+
+    &.processing {
+      @include blurred-greyscale;
+      &:hover {
+        @include blurred-greyscale;
+      }
+    }
+  }
 }
 
 #fullsize {
